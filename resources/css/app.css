@@ -1,9 +1,12 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 input[type=text],
+input[type=number],
 input[type=date],
-input[type=time] {
+input[type=time],
+select {
     @apply block rounded border border-gray-400 w-full
 }

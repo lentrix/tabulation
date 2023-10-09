@@ -9,14 +9,14 @@ class Event extends Model
     protected $guarded = [];
 
     public function teams() {
-        return $this->hasMany('App\Models\Team');
+        return $this->hasMany('App\Models\Team')->orderBy('name');
     }
 
     public function places() {
-        return $this->hasMany('App\Models\Place');
+        return $this->hasMany('App\Models\Place')->orderBy('default_weight','desc');
     }
 
-    public function competition() {
-        return $this->hasMany('App\Models\Competition');
+    public function competitions() {
+        return $this->hasMany('App\Models\Competition')->orderBy('name');
     }
 }

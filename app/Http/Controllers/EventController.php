@@ -35,8 +35,15 @@ class EventController extends Controller
     }
 
     public function show(Event $event) {
+        $emblems = glob('./img/emblems/*.png');
+
         return inertia('Events/Show',[
-            'event' => $event
+            'event' => $event,
+            'teams' => $event->teams,
+            'places' => $event->places,
+            'competitions' => $event->competitions,
+            'emblems' => $emblems
         ]);
     }
+
 }
