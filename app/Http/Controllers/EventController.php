@@ -46,4 +46,27 @@ class EventController extends Controller
         ]);
     }
 
+    public function manage(Event $event) {
+
+        return inertia('Events/Manage',[
+            'event' => $event,
+            'places' => $event->places,
+            'teams' => $event->teams->map(function($data){
+                return [
+                    'id' => $data->id,
+                    'name' => $data->name,
+                    'description' => $data->description,
+                    'totalPoints' => $data->totalPoints
+                ];
+            }),
+            'comps' => $event->competitions->map(function($data){
+                return [
+                    'id' => $data->id,
+                    'name' => $data->name,
+                    'teams' => $data->teamResults
+                ];
+            })
+        ]);
+    }
+
 }

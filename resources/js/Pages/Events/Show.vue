@@ -334,6 +334,9 @@ function confirmDeleteCompetition() {
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Setup Event: {{ event?.title }}
                 </h2>
+                <div class="flex">
+                    <PrimaryButton @click="router.visit('/events/' + event.id + '/manage')">Manage</PrimaryButton>
+                </div>
             </div>
         </template>
 

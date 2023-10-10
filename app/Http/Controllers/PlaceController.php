@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Place;
+use App\Models\Placer;
 use Illuminate\Http\Request;
 
 class PlaceController extends Controller
@@ -34,5 +35,24 @@ class PlaceController extends Controller
     public function destroy(Place $place) {
         $place->delete();
         return back()->with('Info','A place has been deleted.');
+    }
+
+    public function setPlacer(Request $request) {
+        $placer = Placer::where('team_id', $request->team_id)
+                ->where('competition_id', $request->competition_id)->first();
+
+        if($placer) {
+            if($request->place_id) {
+                $placer->place_id=$request->place_id;
+                $placer->save();
+            }else {
+                $placer->delete();
+            }
+        }else {
+            if($request->place_id)
+                Placer::create($request->all());
+        }
+
+        return back()->with('Info','A placer has been set.');
     }
 }

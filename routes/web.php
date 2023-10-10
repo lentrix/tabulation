@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\PlacerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use App\Models\Event;
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('/events/{event}/create-team', [EventController::class, 'createTeam']);
+    Route::get('/events/{event}/manage',[EventController::class, 'manage']);
     Route::get('/events/{event}',[EventController::class, 'show']);
     Route::get('/events',[EventController::class, 'index'])->name('events');
     Route::post('/events',[EventController::class, 'store']);
@@ -53,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/competitions/{competition}',[CompetitionController::class, 'update']);
     Route::delete('/competitions/{competition}',[CompetitionController::class, 'destroy']);
 
+    Route::post('/placers',[PlaceController::class, 'setPlacer']);
 });
 
 require __DIR__.'/auth.php';

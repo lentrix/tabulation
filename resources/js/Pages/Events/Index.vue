@@ -31,6 +31,10 @@
         router.visit('/events/' + id)
     }
 
+    function manageEvent(id) {
+        router.visit('/events/' + id + "/manage")
+    }
+
 </script>
 
 <template>
@@ -80,12 +84,17 @@
         <div class="py-12 px-8">
             <div v-if="events.length==0" class="p-8 bg-white rounded-lg shadow">There are no events.</div>
             <div v-else class="flex flex-wrap gap-4">
-                <div v-for="event in events" :key="event.id" :event="event" class="p-4 shadow bg-white rounded-lg w-[380px] cursor-pointer" @click="openEvent(event.id)">
+                <div v-for="event in events" :key="event.id" :event="event" class="p-4 shadow bg-white rounded-lg w-[380px]">
                     <h4 class="text-3xl">{{ event.title }}</h4>
                     <div>{{ event.description }}</div>
                     <div class="flex italic text-sm text-gray-400">
                         <div>{{ event.start }}</div>
                         <div>{{ event.end }}</div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="flex justify-between">
+                        <PrimaryButton @click="openEvent(event.id)">Setup</PrimaryButton>
+                        <PrimaryButton @click="manageEvent(event.id)">Manage</PrimaryButton>
                     </div>
                 </div>
             </div>
