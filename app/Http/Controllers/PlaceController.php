@@ -44,6 +44,7 @@ class PlaceController extends Controller
         if($placer) {
             if($request->place_id) {
                 $placer->place_id=$request->place_id;
+                $placer->custom_weight = $request->custom_weight;
                 $placer->save();
             }else {
                 $placer->delete();

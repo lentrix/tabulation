@@ -24,7 +24,8 @@ class Competition extends Model
             $teamResults[] = [
                 'team_id' => $team->id,
                 'team_name' => $team->name,
-                'place' => $placer?->place
+                'place' => $placer?->place,
+                'custom_weight' => $placer?->custom_weight
             ];
         }
 

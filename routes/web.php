@@ -23,7 +23,29 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    if(auth()->user()) return redirect('/dashboard');
+
+    $activeEvent = Event::where('start','<=', now())
+            ->where('end','>',now())->first();
+
+    return Inertia::render('Welcome',[
+        'activeEvent' => $activeEvent,
+        'teams' => $activeEvent->teams->map(function($data){
+            return [
+                'id' => $data->id,
+                'name' => $data->name,
+                'description' => $data->description,
+                'totalPoints' => $data->totalPoints
+            ];
+        }),
+        'comps' => $activeEvent->competitions->map(function($data){
+            return [
+                'id' => $data->id,
+                'name' => $data->name,
+                'teams' => $data->teamResults
+            ];
+        })
+    ]);
 });
 
 Route::get('/dashboard', function () {

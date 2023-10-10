@@ -19,7 +19,7 @@ class Team extends Model
     public function getTotalPointsAttribute() {
         $total = 0;
         foreach($this->placers as $placer) {
-            $total += $placer->place->default_weight;
+            $total += $placer->custom_weight;
         }
         return $total;
     }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('place_id')->unsigned();
             $table->bigInteger('competition_id')->unsigned();
             $table->bigInteger('team_id')->unsigned();
+            $table->integer('custom_weight')->nullable();
             $table->timestamps();
             $table->foreign('place_id')->references('id')->on('places')->onDelete('cascade');
             $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
