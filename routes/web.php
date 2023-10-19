@@ -5,7 +5,9 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\PlacerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\TeamController;
+use App\Models\Competition;
 use App\Models\Event;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -22,31 +24,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    if(auth()->user()) return redirect('/dashboard');
-
-    $activeEvent = Event::where('start','<=', now())
-            ->where('end','>',now())->first();
-
-    return Inertia::render('Welcome',[
-        'activeEvent' => $activeEvent,
-        'teams' => $activeEvent->teams->map(function($data){
-            return [
-                'id' => $data->id,
-                'name' => $data->name,
-                'description' => $data->description,
-                'totalPoints' => $data->totalPoints
-            ];
-        }),
-        'comps' => $activeEvent->competitions->map(function($data){
-            return [
-                'id' => $data->id,
-                'name' => $data->name,
-                'teams' => $data->teamResults
-            ];
-        })
-    ]);
-});
+Route::get('/', [GuestController::class, 'index']);
 
 Route::get('/dashboard', function () {
     $events = Event::orderBy('id','desc')->get();

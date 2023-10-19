@@ -1,45 +1,68 @@
 <template>
+
+    <Head title="Overview" />
+
     <div class="bg-blue-500 p-4 flex justify-between items-center">
         <div v-if="activeEvent" class="text-white text-xl bold">{{ activeEvent.title }}</div>
         <Link href="/login" class="bg-blue-100 text-blue-900 px-4 py-2 rounded">Login</Link>
     </div>
 
-    <div v-if="activeEvent">
+    <div v-if="activeEvent" class="px-8 py-4">
+        <h4 class="text-3xl">Medal Tally Page {{ page }} of {{ pages }}</h4>
+        <progress :value="timer" max="20000"></progress>
+    </div>
+    <div v-if="activeEvent" class="flex gap-8 px-8 py-4">
+        <div class="flex-1">
 
-        <table class="mb-14">
-            <thead v-if="showHeader">
-                <tr class="table-header">
-                    <th class="w-[450px] min-w-[450px] text-left">
-                        <button class="bg-gray-500 rounded" @click="stopScroll()">X</button>
-                    </th>
-                    <th v-for="team in teams" class="w-[200px]">{{ team.name }}</th>
-                </tr>
-            </thead>
-            <thead v-on:scroll="console.log(window.scrollY)">
-                <tr>
-                    <th class="w-[450px] min-w-[450px]">&nbsp;</th>
-                    <th v-for="team in teams" class="w-[200px]">{{ team.name }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="comp in comps">
-                    <td class="w-[450px]">{{ comp.name }}</td>
-                    <td v-for="team in comp.teams" class="w-[200px]">
-                        <div v-if="team.place" class="flex gap-2 justify-center items-center bg-teal-100">
-                            <img :src="'../.' + team.place.emblem" alt="emblem" class="h-[30px]">
-                            <div>{{ team.place.label }} ({{ team.custom_weight }})</div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>TOTAL</th>
-                    <th v-for="team in teams">{{ team.totalPoints }}</th>
-                </tr>
-            </tfoot>
-        </table>
-        <div>&nbsp;</div>
+            <table class="mb-14">
+                <thead v-on:scroll="console.log(window.scrollY)">
+                    <tr>
+                        <th class="w-[450px] min-w-[450px]">&nbsp;</th>
+                        <th v-for="team in teams" class="w-[200px]">{{ team.name }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="comp in comps">
+                        <td class="w-[450px]" style="background-color: #cdeaf1!important;">{{ comp.name }}</td>
+                        <td v-for="team in comp.teams" class="w-[200px]">
+                            <div v-if="team.place" class="flex gap-2 justify-center items-center bg-teal-100">
+                                <img :src="'../.' + team.place.emblem" alt="emblem" class="h-[60px]">
+                                <div>({{ team.custom_weight }})</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>TOTAL POINTS</th>
+                        <th v-for="team in teams">{{ team.totalPoints }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="w-[25%]">
+            <div class=" p-4 bg-gray-300 rounded-lg shadow-md border border-gray-400">
+                <h4 class="text-2xl">Medal Summary</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="28%">&nbsp;</th>
+                            <th width="24%">Gold</th>
+                            <th width="24%">Silver</th>
+                            <th width="24%">Bronze</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="row in summary">
+                            <td>{{ row.team }}</td>
+                            <td>{{ row.Gold }}</td>
+                            <td>{{ row.Silver }}</td>
+                            <td>{{ row.Bronze }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div v-else class="w-screen h-screen flex justify-center items-center flex-col">
         <h1 class="text-4xl">Welcome</h1>
@@ -50,58 +73,48 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import { onMounted, ref } from 'vue';
+import { Link, Head, router } from '@inertiajs/vue3';
+import { onMounted, ref, onBeforeUnmount } from 'vue';
 
 const props = defineProps({
     activeEvent: Object,
     teams: Array,
-    comps: Array
+    comps: Array,
+    summary: Array,
+    pages: Number
 })
 
-let scrollID
+const timer = ref(20000)
 
-const showHeader = ref(false)
+let page = (new URLSearchParams(window.location.search)).get('page')??1;
+let id
 
-function checkScrollPosition() {
-    if(window.scrollY > 100) {
-        showHeader.value = true
-    }else {
-        showHeader.value = false
-    }
-}
+let sortedSummary = props.summary.sort((a,b)=>{
 
-function startScrolling(){
-    scrollID = setInterval(function() {
-        window.scrollBy(0, 1);
-            if ((window.innerHeight + window.scrollY + 1) >= document.body.offsetHeight) {
-                // Reached end of page
-                clearInterval(scrollID)
-                reverseScrolling();
-            }
-        }, 50);
-}
+    return (a.Gold < b.Gold) ? 1 : (a.Gold > b.Gold) ? -1 : (a.Silver < b.Silver) ? 1 : (a.Silver > b.Silver) ? -1 : 0;
+})
 
-function reverseScrolling(){
-    scrollID = setInterval(function() {
-        window.scrollBy(0, -1);
-            if (window.scrollY<=0) {
-                // Reached end of page
-                clearInterval(scrollID)
-                startScrolling();
-            }
-        }, 50);
-}
+console.log(sortedSummary)
 
-function stopScroll() {
-    console.log("Stop scroll.")
-    clearInterval(scrollID)
+function moveNext() {
+    if(page==props.pages) page = 1
+    else page++
+
+    router.visit('/?page=' + page)
 }
 
 onMounted(()=>{
-    window.addEventListener('scroll', checkScrollPosition)
+    id = setInterval(()=>{
+        timer.value-=100
+        if(timer.value<=0) {
+            clearInterval(id)
+            moveNext()
+        }
+    }, 100)
+})
 
-    startScrolling()
+onBeforeUnmount(()=>{
+    clearInterval(id)
 })
 
 </script>
@@ -109,20 +122,21 @@ onMounted(()=>{
 <style scoped>
 
 table {
-    /* @apply w-[100%] */
+    @apply w-[100%]
 }
 
 th {
-    @apply bg-teal-800 text-white
+    @apply bg-blue-500 text-white
 }
 
 td, th {
-    @apply border border-gray-400
+    @apply border border-blue-500 text-2xl min-h-[80px] text-center;
 }
 
-.table-header {
-    position: fixed;
-    top: 0;
+td {
+    height: 60px!important;
+    background-color: white;
 }
+
 
 </style>

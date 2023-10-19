@@ -23,4 +23,10 @@ class Team extends Model
         }
         return $total;
     }
+
+    public function countPlace(Place $place) {
+        return Placer::where('place_id', $place->id)
+                ->where('team_id', $this->id)
+                ->count();
+    }
 }
