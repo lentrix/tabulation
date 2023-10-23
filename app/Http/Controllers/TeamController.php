@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,11 @@ class TeamController extends Controller
             'event_id' => $request->event_id,
         ]);
 
+        ActivityLog::create([
+            'user_id' => auth()->user()->id,
+            'activity'=>'Created team ' . $request->name
+        ]);
+
         return back()->with('Info','A new team has been created.');
     }
 
@@ -33,6 +39,11 @@ class TeamController extends Controller
             'description' => $request->description
         ]);
 
+        ActivityLog::create([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Updated team ' . $team->name
+        ]);
+
         return back()->with('Info','The team has been updated.');
     }
 
@@ -40,6 +51,12 @@ class TeamController extends Controller
     {
         $name = $team->name;
         $team->delete();
+
+        ActivityLog::create([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Deleted team ' . $name
+        ]);
+
         return back()->with('Info','The team ' . $name . ' has been deleted.');
     }
 }

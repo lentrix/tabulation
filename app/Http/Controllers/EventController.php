@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,11 @@ class EventController extends Controller
             'description' => $request->description,
             'start' => $request->start_date . " " . $request->start_time,
             'end' => $request->end_date . " " . $request->end_time,
+        ]);
+
+        ActivityLog::create([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Added an event titled: ' . $request->title
         ]);
 
         return redirect('/events')->with('Info','A new event has been created.');

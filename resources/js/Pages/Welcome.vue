@@ -9,7 +9,7 @@
 
     <div v-if="activeEvent" class="px-8 py-4">
         <h4 class="text-3xl">Medal Tally Page {{ page }} of {{ pages }}</h4>
-        <progress :value="timer" max="20000"></progress>
+        <progress :value="timer" max="20000" style="color: #4a55f8!important; background-color: #4a55f8!important;"></progress>
     </div>
     <div v-if="activeEvent" class="flex gap-8 px-8 py-4">
         <div class="flex-1">
@@ -89,7 +89,7 @@ const timer = ref(20000)
 let page = (new URLSearchParams(window.location.search)).get('page')??1;
 let id
 
-let sortedSummary = props.summary.sort((a,b)=>{
+let sortedSummary = props.summary?.sort((a,b)=>{
 
     return (a.Gold < b.Gold) ? 1 : (a.Gold > b.Gold) ? -1 : (a.Silver < b.Silver) ? 1 : (a.Silver > b.Silver) ? -1 : 0;
 })
@@ -136,6 +136,11 @@ td, th {
 td {
     height: 60px!important;
     background-color: white;
+}
+
+progress {
+    background-color: blue;
+    color: blue;
 }
 
 

@@ -39,7 +39,7 @@ class GuestController extends Controller
                 ];
             }),
             'pages' => $pages,
-            'summary' => $activeEvent->medalSummary()
+            'summary' => $activeEvent?$activeEvent->medalSummary():[]
         ]);
     }
 }
