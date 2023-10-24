@@ -10,3 +10,12 @@ input[type=time],
 select {
     @apply block rounded border border-gray-400 w-full
 }
+
+body {
+    background-color: #334455;
+    background-image: url('../../public/img/mdc_cover_darkened.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}

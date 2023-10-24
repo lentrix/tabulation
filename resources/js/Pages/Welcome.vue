@@ -8,7 +8,7 @@
     </div>
 
     <div v-if="activeEvent" class="px-8 py-4">
-        <h4 class="text-3xl">Medal Tally Page {{ page }} of {{ pages }}</h4>
+        <h4 class="text-3xl text-white">Medal Tally Page {{ page }} of {{ pages }}</h4>
         <progress :value="timer" max="20000" style="color: #4a55f8!important; background-color: #4a55f8!important;"></progress>
     </div>
     <div v-if="activeEvent" class="flex gap-8 px-8 py-4">
@@ -40,7 +40,7 @@
                 </tfoot>
             </table>
         </div>
-        <div class="w-[25%]">
+        <div class="w-[25%]" style="opacity: 0.7;">
             <div class=" p-4 bg-gray-300 rounded-lg shadow-md border border-gray-400">
                 <h4 class="text-2xl">Medal Summary</h4>
                 <table>
@@ -131,6 +131,7 @@ th {
 
 td, th {
     @apply border border-blue-500 text-2xl min-h-[80px] text-center;
+    opacity: 0.7;
 }
 
 td {
