@@ -64,7 +64,7 @@ function confirmSetPlace() {
                     <input type="number" id="custom_weight" v-model="form.custom_weight" />
                     <div class="text-red-700 italic text-sm" v-if="form.errors.custom_weight">{{ form.errors.custom_weight }}</div>
                 </div>
-                <div class="mb-4 flex gap-4 justify-center items-center">
+                <div class="mb-4 flex gap-4 justify-center items-center flex-wrap">
                     <label v-for="place in places" class="flex gap-2">
                         <input type="radio" name="place_id" :value="place.id" @click="form.custom_weight=place.default_weight; form.place_id=place.id">
                         <img :src="'../.' + place.emblem" class="h-[24px]" alt="">
