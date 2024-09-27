@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Event::create([
-            'title' => 'MDC Siklab 2023',
-            'description' => 'MDC Intramurals 2023',
-            'start' => '2023-10-26 07:00',
-            'end' => '2023-10-28 22:00'
+            'title' => 'MDC Siklab 2024',
+            'description' => 'MDC Intramurals 2024',
+            'start' => '2024-10-23 07:00',
+            'end' => '2024-10-25 22:00'
         ]);
 
         $this->call(TeamSeeder::class);
