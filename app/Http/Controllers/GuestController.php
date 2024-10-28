@@ -17,7 +17,7 @@ class GuestController extends Controller
 
         $competitions = Competition::where('event_id', $activeEvent?->id)->orderBy('name');
 
-        $rowsPerPage = 11;
+        $rowsPerPage = 7;
 
         $pages = ceil($competitions->count() / $rowsPerPage);
 
