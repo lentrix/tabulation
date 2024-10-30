@@ -27,7 +27,7 @@
                         <td v-for="team in comp.teams" class="w-[200px]">
                             <div v-if="team.place" class="flex gap-2 justify-center items-center bg-teal-100">
                                 <img :src="'../.' + team.place.emblem" alt="emblem" class="h-[60px]">
-                                <div>({{ team.custom_weight }})</div>
+                                <!-- <div>({{ team.custom_weight }})</div> -->
                             </div>
                         </td>
                     </tr>
